@@ -100,7 +100,7 @@ for i in range(0, count_winners):
 text += footer_template
 
 print("Writing data")
-text_file = open("post-text.md", "w")
+text_file = open("post-text.md", "w", encoding="utf-8")
 text_file.write(text)
 text_file.close()
 posts_dict.to_csv("posts.csv")
