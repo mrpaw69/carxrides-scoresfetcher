@@ -63,8 +63,11 @@ If bootstrap fails with something like `pip3 not available`, `pip3: command not 
 5. Open `private_constants.py`(will be available soon) and fill out your created Reddit app data. Make sure to put each data in quotes, or else code won't execute. Like this:
 
 client_id="your-reddit-app-client-id"
+>STRICT RECOMMENDATION: Please don't put your Reddit password in `redd_password` field! Preferred way is to enter the password each time script executes. While it's a bit incoveniient, it's more secure, since password is NOT stored on disk. It's intended to run just once a week, so it shouldn't be frustrating.
 
-6. Now it should be ready
+>Unless you're debugging the script on a throwaway account. When debugging/developing, usually you have to launch it many times in a short period of time because you're constantly modifying and testing the code, it can get really frustrating to enter password every f##king time
+
+6. Now it should be ready to [use](#usage)
 
 # Usage
 
@@ -74,7 +77,7 @@ client_id="your-reddit-app-client-id"
 
 3. Run `python3 main.py`
 
-4. (TO BE IMPLEMENTED) It should ask for start date and end date. Start date is date script starts searching posts with, end date is where script stops searching. Start date should always be earlier than end date
+4. It should ask for start date and end date. Start date is date script starts searching posts with, end date is where script stops searching. Start date should always be earlier than end date
 
 5. It will ask for your Reddit credentials. It won't work without them. DW, they're only passed to PRAW lib for authentication, which is open-source and available [here](https://github.com/praw-dev/praw)
 
