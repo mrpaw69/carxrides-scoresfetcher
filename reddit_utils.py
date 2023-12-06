@@ -1,16 +1,23 @@
 import praw
 from praw.models import MoreComments
+from getpass import getpass
+
 from constants import *
 from private_constants import *
 from rating_utils import *
 from date_utils import *
 
-def create_reddit(username, password):
-    return praw.Reddit(client_id=api_client_id,
-                       client_secret=api_secret,
-                       user_agent=api_user_agent,
-                       username=username,
-                       password=password)
+def create_reddit():
+	passwd = redd_password
+	if len(passwd) == 0:
+		print(f"u/{redd_username}, Please enter your Reddit password")
+		passwd = getpass("Password: ")
+	else:
+		print(f"UNSAFE PASSWORD ENTRY WARNING: u/{redd_username}, your password is currently stored in `private_constants.py` file, which is UNSAFE!")
+		print("You don't have to enter your password now, but KEEP IN MIND that a malicious program, or other person that gets access to your PC might read that file and steal your Reddit password!")
+		print("So please consider navigating to that file and erasing `redd_password` to \"\"(it should be like this: `redd_password = \"\"`). After that, CarXRides-ScoresFetcher will be asking for password each run, which is more secure than having password stored in a file")
+		print("If you have suspicion that the password got stolen, navigate to your Reddit account and change the password. I recommend using a trusted password generator(for example, Safari browser automatically detects and generates a password when needed)")
+	return praw.Reddit(client_id=api_client_id, client_secret=api_secret, user_agent=api_user_agent, username=redd_username, password=passwd)
 
 def get_subreddit(reddit):
 	return reddit.subreddit(subreddit_name)

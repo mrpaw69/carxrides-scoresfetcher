@@ -3,35 +3,32 @@ from praw.models import MoreComments
 import pandas as pd
 import datetime
 import re
-from getpass import getpass
 
 from reddit_utils import *
 from date_utils import *
 from rating_utils import *
+from private_constants import *
 
+print("Date/Time format is 'dd/mm/yy hh:mm:ss'. Make sure to enter start and end datetime in this format")
+print("Example of December 1, 2023 at 12 AM (00:00): '01/12/23 00:00:00'")
+print("Keep in mind that timezone CarXRides-ScoresFetcher counts from is UTC")
+print() # space
+start_date = to_timestamp(input("Enter start datetime, where CarXRides-ScoresFetcher will start searching from (without single(') or double(\") quotes): "))
+end_date = to_timestamp(input("Enter end datetime, where CarXRides-ScoresFetcher will end searching (without single(') or double(\") quotes): "))
 
-start_date = to_timestamp('01/10/23 00:00:00')
-end_date = to_timestamp('01/11/23 00:00:00')
 how_many_winners = 10
 
-print("In order to work correctly, the script needs your Reddit login credentials.")
-print("Reddit instance needs to be authenticated in order to successfully get list of moderators and muted users.")
-print("Your login credentials won't be saved or stored anywhere. You can always check the source code if you have concerns")
-username = input("Username: ")
-password = getpass("Password: ")
-print()
-
 print("Creating and authenticating Reddit instance")
-reddit = create_reddit(username, password)
+reddit = create_reddit()
 print("Authenticating and retrieving data")
 # checking is user is a mod
 is_valid_user = False
 for mod in get_moderators(get_subreddit(reddit)):
-	if mod.name == username:
+	if mod.name == redd_username:
 		is_valid_user = True
 
 if not is_valid_user:
-	print(f"u/{username} doesn't appear to be a r/{subreddit_name} moderator")
+	print(f"u/{redd_username} doesn't appear to be a r/{subreddit_name} moderator")
 	print("The script access is limited only to moderators. Because reasons")
 	print("Aborting")
 	exit()
