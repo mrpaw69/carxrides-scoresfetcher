@@ -25,10 +25,13 @@ def get_subreddit(reddit):
 def get_moderators(subreddit):
 	return subreddit.moderator()
 
-def get_muted(subreddit):
+def get_muted(subreddit, is_mod):
 	users = []
-	for user in subreddit.muted():
-		users.append(user)
+	if is_mod:
+		for user in subreddit.muted():
+			users.append(user)
+	else:
+		print(f"Unable to get muted users in the r/{subreddit_name}: Reddit only allows that information to moderators")
 	return users
 
 def fetch_posts_from_date_range(start_date, end_date, reddit, muted):
@@ -83,12 +86,12 @@ def retrieve_comments(submission, start_date, end_date, mods, muted):
 
 # Retrieves all posts & comments from a specified date range, calculates ratings
 # and returns two disctionaries: posts and comments
-def fetch_posts_and_comments_from_date_range(start_date, end_date, reddit):
+def fetch_posts_and_comments_from_date_range(start_date, end_date, reddit, is_mod):
 	posts_dict = { "title": [], "id": [], "author": [], "is_mod": [], "rating": [], "datetime": [], "top_comment": [] }
 	comments_dict = { "post_id": [], "author": [], "is_mod": [], "rating": [], "body": [], "datetime": [] }
 	subreddit = get_subreddit(reddit)
 	mods = get_moderators(subreddit)
-	muted = get_muted(subreddit)
+	muted = get_muted(subreddit, is_mod)
 	posts = fetch_posts_from_date_range(start_date, end_date, reddit, muted)
 	for post in posts:
 		(comments_data, top_comment) = retrieve_comments(post, start_date, end_date, mods, muted)

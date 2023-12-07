@@ -1,8 +1,5 @@
-import praw
-from praw.models import MoreComments
 import pandas as pd
 import datetime
-import re
 
 from reddit_utils import *
 from date_utils import *
@@ -22,18 +19,17 @@ print("Creating and authenticating Reddit instance")
 reddit = create_reddit()
 print("Authenticating and retrieving data")
 # checking is user is a mod
-is_valid_user = False
+is_mod = False
 for mod in get_moderators(get_subreddit(reddit)):
 	if mod.name == redd_username:
-		is_valid_user = True
+		is_mod = True
 
-if not is_valid_user:
+if not is_mod:
 	print(f"u/{redd_username} doesn't appear to be a r/{subreddit_name} moderator")
-	print("The script access is limited only to moderators. Because reasons")
-	print("Aborting")
-	exit()
+	print("Some things like muted users list is available only for moderators")
+	print("Results may contain results that should not be included, like posts and comments from muted users")
 
-posts_dict, comments_dict = fetch_posts_and_comments_from_date_range(start_date, end_date, reddit)
+posts_dict, comments_dict = fetch_posts_and_comments_from_date_range(start_date, end_date, reddit, is_mod)
 posts_dict = pd.DataFrame(posts_dict)
 comments_dict = pd.DataFrame(comments_dict)
 
