@@ -52,7 +52,13 @@ Feel free to open an issue on [Issues page](https://github.com/mrpaw69/carxrides
 
 # License
 
-CarXRides-ScoresFetcher is licenced under [MIT license](./LICENSE.md).
+CarXRides-ScoresFetcher is licenced under Apache License 2.0.\
+Unless required by applicable law or agreed to in writing, software
+distributed under the [License](./LICENSE.md) is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the [License](./LICENSE.md) for the specific language governing permissions and
+limitations under the [License](./LICENSE.md).\
+Copyright 2023 mrpaw69
 
 # Contributions
 

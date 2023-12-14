@@ -1,3 +1,11 @@
+ #  Unless required by applicable law or agreed to in writing, software
+ #  distributed under the License is distributed on an "AS IS" BASIS,
+ #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ #  See the License for the specific language governing permissions and
+ #  limitations under the License.
+ #
+ #  Copyright 2023 mrpaw69
+
 # API
 api_secret = "YourAPISecret" # replace 'YourAPISecret' with your script application user agent
 api_client_id = "YourClientId" # replace 'YourClientId' with your script application user agent
