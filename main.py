@@ -27,12 +27,17 @@ print("Keep in mind that timezone CarXRides-ScoresFetcher counts from is UTC")
 print() # space
 start_date = to_timestamp(input("Enter start datetime, where CarXRides-ScoresFetcher will start searching from (without single(') or double(\") quotes): "))
 end_date = to_timestamp(input("Enter end datetime, where CarXRides-ScoresFetcher will end searching (without single(') or double(\") quotes): "))
-
-how_many_winners = 10
+print()
+how_many_winners = input("How many winners do you want to save?: ")
+if how_many_winners.isdigit():
+	how_many_winners = int(how_many_winners)
+else:
+	print("The value you entered was not valid. Aborting")
+	exit()
 
 print("Creating and authenticating Reddit instance")
 reddit = create_reddit()
-print("Authenticating and retrieving data")
+print("Authenticating and retrieving data\n")
 # checking is user is a mod
 is_mod = False
 for mod in get_moderators(get_subreddit(reddit)):
@@ -47,6 +52,9 @@ if not is_mod:
 posts_dict, comments_dict = fetch_posts_and_comments_from_date_range(start_date, end_date, reddit, is_mod)
 posts_dict = pd.DataFrame(posts_dict)
 comments_dict = pd.DataFrame(comments_dict)
+
+print()
+print("Calculating scores...")
 
 indexes = []
 for i in range(0, len(posts_dict)):
@@ -81,19 +89,26 @@ for i in ratings_indexes:
 	sorted_posts_dict["top_comment_author"].append(posts_dict["top_comment"][idx]["author"])
 sorted_posts_dict  = pd.DataFrame(sorted_posts_dict)
 
+print("Generating text...")
+
 sub = get_subreddit(reddit)
 place_templates = [
 	sub.wiki["scores-retriever-first-place-template"].content_md,
 	sub.wiki["scores-retriever-second-place-template"].content_md,
 	sub.wiki["scores-retriever-third-place-template"].content_md
 ]
+count_winners = min(how_many_winners, len(sorted_posts_dict))
+if count_winners > 3:
+	for i in range(3, count_winners):
+		place_templates.append(sub.wiki["scores-retriever-anyplace-template"].content_md)
+
 header_template = sub.wiki["scores-retriever-header-template"].content_md
 footer_template = sub.wiki["scores-retriever-footer-template"].content_md
-count_winners = min(min(len(place_templates), how_many_winners), len(sorted_posts_dict))
 posts_count = len(posts_dict["title"])
 text = header_template.replace("<posts-count>", f"{posts_count}") + "\n\n\n\n"
 for i in range(0, count_winners):
 	template = place_templates[i]
+	place_num = str(i + 1)
 	user = sorted_posts_dict["author"][i].name
 	date = sorted_posts_dict["datetime"][i]
 	rating = sorted_posts_dict["rating"][i]
@@ -106,14 +121,21 @@ for i in range(0, count_winners):
 	post_url = f"https://reddit.com/r/{subreddit_name}/comments/{post_id}"
 	top_comment_text = sorted_posts_dict["top_comment_text"][i]
 	top_comment_author = sorted_posts_dict["top_comment_author"][i].name
-	text += template.replace("<user>", user).replace("<date>", date).replace("<rating>", rating_str).replace("<modbadge>", modbadge).replace("<post-title>", post_title).replace("<post-url>", post_url).replace("<top-comment-text>", top_comment_text).replace("<top-comment-author>", top_comment_author) + "\n\n\n"
+	text += template.replace("<user>", user).replace("<date>", date).replace("<rating>", rating_str).replace("<modbadge>", modbadge).replace("<post-title>", post_title).replace("<post-url>", post_url).replace("<top-comment-text>", top_comment_text).replace("<top-comment-author>", top_comment_author).replace("<place>", place_num) + "\n\n\n"
 
 text += footer_template
 
 print("Writing data")
+
+meta = { "totalPostsCount": posts_count, "validPostsCount": len(sorted_posts_dict), "inputWinnersCount": how_many_winners, "outputWinnersCount": count_winners, "highestRating": sorted_posts_dict["rating"][0] }
+meta = pd.DataFrame(meta, index=[0])
 text_file = open("post-text.md", "w", encoding="utf-8")
 text_file.write(text)
 text_file.close()
 posts_dict.to_csv("posts.csv")
 comments_dict.to_csv("comments.csv")
 sorted_posts_dict.to_csv("winners.csv")
+meta.to_csv("meta.csv")
+
+print("Finished")
+print("Generated text is written to `post-text.md`\nWinners CSV data written to `winners.csv`\nPosts CSV data written to `posts.csv`\nComments CSV data is written to `comments.csv`\nOther results data written to `meta.csv`")
