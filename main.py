@@ -127,8 +127,8 @@ text += footer_template
 
 print("Writing data")
 
-meta = { "totalPostsCount": [posts_count], "validPostsCount": [len(sorted_posts_dict)], "inputWinnersCount": [how_many_winners], "outputWinnersCount": [count_winners], "highestRating": [sorted_posts_dict["rating"][0]] }
-meta = pd.DataFrame(meta)
+meta = { "totalPostsCount": posts_count, "validPostsCount": len(sorted_posts_dict), "inputWinnersCount": how_many_winners, "outputWinnersCount": count_winners, "highestRating": sorted_posts_dict["rating"][0] }
+meta = pd.DataFrame(meta, index=[0])
 text_file = open("post-text.md", "w", encoding="utf-8")
 text_file.write(text)
 text_file.close()
