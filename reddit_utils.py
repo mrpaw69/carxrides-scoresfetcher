@@ -102,7 +102,7 @@ def retrieve_comments(submission, start_date, end_date, mods, muted):
 # Retrieves all posts & comments from a specified date range, calculates ratings
 # and returns two disctionaries: posts and comments
 def fetch_posts_and_comments_from_date_range(start_date, end_date, reddit, is_mod):
-	posts_dict = { "title": [], "id": [], "author": [], "is_mod": [], "rating": [], "datetime": [], "top_comment": [] }
+	posts_dict = { "title": [], "id": [], "author": [], "is_mod": [], "rating": [], "datetime": [], "top_comment": [], "ts_utc": [] }
 	comments_dict = { "post_id": [], "author": [], "is_mod": [], "rating": [], "body": [], "datetime": [] }
 	subreddit = get_subreddit(reddit)
 	mods = get_moderators(subreddit)
@@ -126,4 +126,5 @@ def fetch_posts_and_comments_from_date_range(start_date, end_date, reddit, is_mo
 		posts_dict["is_mod"].append(is_mod)
 		posts_dict["datetime"].append(time_to_string(time_from_utc(post.created_utc)))
 		posts_dict["top_comment"].append(top_comment)
+		posts_dict["ts_utc"].append(post.created_utc)
 	return posts_dict, comments_dict

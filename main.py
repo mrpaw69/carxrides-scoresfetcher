@@ -60,16 +60,47 @@ indexes = []
 for i in range(0, len(posts_dict)):
 	indexes.append(i)
 # sort and calculate winners
-
+ratings = []
 ratings_indexes = []
 for i in indexes:
-	ratings_indexes.append((posts_dict["rating"][i], i))
-ratings_indexes.sort(key=lambda x: x[0])
-ratings_indexes.reverse()
+	rat = posts_dict["rating"][i]
+	if rat not in ratings:
+		ratings.append(rat)
+	ratings_indexes.append((posts_dict["rating"][i], posts_dict["ts_utc"][i], i))
+
+ratings.sort()
+ratings.reverse()
+
+print(f"RATINGS: {ratings}")
+
+sorted_indexes = {}
+for rat in ratings:
+	sorted_indexes[rat] = []
+
+for (rat, ts, idx) in ratings_indexes:
+	sorted_indexes[rat].append((rat, ts, idx))
+
+for rat in ratings:
+	arr = sorted_indexes[rat]
+	# sort by UTC timestamp, starting from newest
+	arr.sort(key=lambda x: x[1])
+	arr.reverse()
+	sorted_indexes[rat] = arr
+
+print(f"SORTED: {sorted_indexes}")
+
+ratings_indexes = []
+
+for rat in ratings:
+	ratings_indexes.extend(sorted_indexes[rat])
+
+# sorting finished lol
+
+print(f"FINAL: {ratings_indexes}")
 
 sorted_posts_dict = { "title": [], "id": [], "author": [], "is_mod": [], "rating": [], "datetime": [], "top_comment_text": [], "top_comment_author": [] }
 for i in ratings_indexes:
-	(rating, idx) = i
+	(rating, ts, idx) = i
 	# only rated ones are accepted
 	if rating == -1:
 		continue
