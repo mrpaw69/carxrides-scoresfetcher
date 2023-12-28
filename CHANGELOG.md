@@ -55,7 +55,7 @@ Versions with `.beta_x` postfix at the end, where x is a release number, are Bet
 - Saving all the scores
 
 [unreleased]: https://github.com/mrpaw69/carxrides-scoresfetcher/compare/1.1.0...develop
-[1.1.1.beta_0]: https://github.com/mrpaw69/carxrides-scoresfetcher/compare/1.1.0...1.1.1_beta
+[1.1.1.beta_0]: https://github.com/mrpaw69/carxrides-scoresfetcher/compare/1.1.0...1.1.1.beta_0
 [1.1.0]: https://github.com/mrpaw69/carxrides-scoresfetcher/compare/1.0.1...1.1.0
 [1.0.1]: https://github.com/mrpaw69/carxrides-scoresfetcher/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/mrpaw69/carxrides-scoresfetcher/compare/rc-1.0.0...1.0.0
