@@ -21,7 +21,7 @@ def to_timestamp(str_time):
 	return datetime.strptime(str_time, date_format).timestamp()
 
 def time_to_string(t):
-	return t.strftime('%B %d, %A, at %H:%M')
+	return t.strftime('%B %d, %A, at %H:%M') + " UTC"
 
 def time_from_utc(seconds):
 	return datetime.utcfromtimestamp(seconds)

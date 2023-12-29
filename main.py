@@ -71,8 +71,6 @@ for i in indexes:
 ratings.sort()
 ratings.reverse()
 
-print(f"RATINGS: {ratings}")
-
 sorted_indexes = {}
 for rat in ratings:
 	sorted_indexes[rat] = []
@@ -87,7 +85,6 @@ for rat in ratings:
 	arr.reverse()
 	sorted_indexes[rat] = arr
 
-print(f"SORTED: {sorted_indexes}")
 
 ratings_indexes = []
 
@@ -96,9 +93,7 @@ for rat in ratings:
 
 # sorting finished lol
 
-print(f"FINAL: {ratings_indexes}")
-
-sorted_posts_dict = { "title": [], "id": [], "author": [], "is_mod": [], "rating": [], "datetime": [], "top_comment_text": [], "top_comment_author": [] }
+sorted_posts_dict = { "title": [], "id": [], "author": [], "is_mod": [], "rating": [], "datetime": [], "ts_utc": [], "top_comment_text": [], "top_comment_author": [], "top_comment_ts_utc": [] }
 for i in ratings_indexes:
 	(rating, ts, idx) = i
 	# only rated ones are accepted
@@ -116,8 +111,10 @@ for i in ratings_indexes:
 	sorted_posts_dict["is_mod"].append(posts_dict["is_mod"][idx])
 	sorted_posts_dict["rating"].append(posts_dict["rating"][idx])
 	sorted_posts_dict["datetime"].append(posts_dict["datetime"][idx])
+	sorted_posts_dict["ts_utc"].append(posts_dict["ts_utc"][idx])
 	sorted_posts_dict["top_comment_text"].append(posts_dict["top_comment"][idx]["text"])
 	sorted_posts_dict["top_comment_author"].append(posts_dict["top_comment"][idx]["author"])
+	sorted_posts_dict["top_comment_ts_utc"].append(posts_dict["top_comment"][idx]["ts_utc"])
 sorted_posts_dict  = pd.DataFrame(sorted_posts_dict)
 
 print("Generating text...")

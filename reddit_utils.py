@@ -60,8 +60,8 @@ def fetch_posts_from_date_range(start_date, end_date, reddit, muted):
 	return filtered_posts
 
 def retrieve_comments(submission, start_date, end_date, mods, muted):
-	comments_dict = { "post_id": [], "author": [], "is_mod": [], "rating": [], "body": [], "datetime": [] }
-	top_comment = { "text": "<none>", "author": "", "score": -999 }
+	comments_dict = { "post_id": [], "author": [], "is_mod": [], "rating": [], "body": [], "datetime": [], "ts_utc": [] }
+	top_comment = { "text": "<none>", "author": "", "score": -999, "ts_utc": 0 }
 	for comment in submission.comments:
 		date = comment.created_utc
 		if (date < start_date) or (date > end_date):
@@ -87,6 +87,7 @@ def retrieve_comments(submission, start_date, end_date, mods, muted):
 			top_comment["text"] = comment.body
 			top_comment["author"] = comment.author
 			top_comment["score"] = comment.score
+			top_comment["ts_utc"] = comment.created_utc
 		rating = extract_rating(comment.body)
 		is_mod = False
 		if comment.author in mods:
@@ -97,13 +98,14 @@ def retrieve_comments(submission, start_date, end_date, mods, muted):
 		comments_dict["rating"].append(rating)
 		comments_dict["is_mod"].append(is_mod)
 		comments_dict["datetime"].append(time_to_string(time_from_utc(date)))
+		comments_dict["ts_utc"].append(comment.created_utc)
 	return (comments_dict, top_comment)
 
 # Retrieves all posts & comments from a specified date range, calculates ratings
 # and returns two disctionaries: posts and comments
 def fetch_posts_and_comments_from_date_range(start_date, end_date, reddit, is_mod):
 	posts_dict = { "title": [], "id": [], "author": [], "is_mod": [], "rating": [], "datetime": [], "top_comment": [], "ts_utc": [] }
-	comments_dict = { "post_id": [], "author": [], "is_mod": [], "rating": [], "body": [], "datetime": [] }
+	comments_dict = { "post_id": [], "author": [], "is_mod": [], "rating": [], "body": [], "datetime": [], "ts_utc": [] }
 	subreddit = get_subreddit(reddit)
 	mods = get_moderators(subreddit)
 	muted = get_muted(subreddit, is_mod)
@@ -116,6 +118,7 @@ def fetch_posts_and_comments_from_date_range(start_date, end_date, reddit, is_mo
 		comments_dict["rating"].extend(comments_data["rating"])
 		comments_dict["is_mod"].extend(comments_data["is_mod"])
 		comments_dict["datetime"].extend(comments_data["datetime"])
+		comments_dict["ts_utc"].extend(comments_data["ts_utc"])
 		is_mod = False
 		if post.author in mods:
 			is_mod = True

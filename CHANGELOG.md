@@ -19,12 +19,12 @@ Versions with `.beta_x` postfix at the end, where x is a release number, are Bet
 ### Added
 
 - This changelog
+- Added "UTC" at the end of datetime string to eliminate timezone confusion
+- Added "ts_utc" to posts.csv and comments.csv
 
 ### Removed
 
-- Removed accidentally pushed API keys (they cannot be used by the way)
-
-## [1.1.1.beta_0]
+- Removed accidentally pushed API keys (they cannot be used now anyway)
 
 ### Fixed
 
