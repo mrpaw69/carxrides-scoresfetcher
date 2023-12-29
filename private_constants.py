@@ -14,10 +14,10 @@
  #
 
 # API
-api_secret = "s4-Ar-JzgTPU-y76JOLFPOvQo8Q8yw"
-api_client_id = "sDuykydRp_B5FFw8Xw1TCA"
-api_user_agent = "CarXRides Scores Retriever"
+api_secret = "API_SECRET" # replace API_SECRET with your Reddit app Secret key
+api_client_id = "CLIENT_ID" # replace CLIENT_ID with Reddit app client id. It's located under application name
+api_user_agent = "USER_AGENT" # replace USER_AGENT with your Reddit app name
 
 # Authentication
-redd_username = "ExclusiveDumbass101"
-redd_password = "baztyf-qubkeN-8maqsa" # please leave it empty, it's for your safety. Should ONLY be used for debugging on a throwaway Reddit account(so it won't matter if password will get stolen)
+redd_username = "spez" # replace spez with your username
+redd_password = "" # please leave it empty, it's for your safety. Should ONLY be used for debugging on a throwaway Reddit account(so it won't matter if password will get stolen)
